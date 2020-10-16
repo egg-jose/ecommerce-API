@@ -1,8 +1,12 @@
 const router = require('express').Router();
+
 const User = require('../components/users/model');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
 const { registerValidation, loginValidation } = require('./authValidations');
+
 const env = require('../config/envioroment');
 
 router.post('/register', async (req, res) => {
@@ -23,6 +27,7 @@ router.post('/register', async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: hashPassword,
+    admin: req.body.admin || false,
   });
 
   //Try save the new user

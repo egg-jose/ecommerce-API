@@ -4,8 +4,14 @@ const app = express();
 //Import env variable
 const env = require('./config/envioroment');
 
+//Import middleware
+const verifyToken = require('./middlewares/verifyToken');
+
 //Import routes
 const authRoutes = require('./middlewares/auth');
+const categoryRoutes = require('./components/categories/routes');
+const productRoutes = require('./components/products/routes');
+const saleRoutes = require('./components/sales/routes');
 
 //Connect to database
 const db = require('./config/database');
@@ -15,8 +21,12 @@ db.once('open', () => console.log('Connected to Mongoose'));
 //Middleware
 app.use(express.json());
 
+app.use('/', authRoutes);
+app.use(verifyToken);
 //Routes
-app.use('/api/user', authRoutes);
+app.use('/category', categoryRoutes);
+app.use('/product', productRoutes);
+app.use('/sale', saleRoutes);
 
 //Start API
 const port = env.PORT || 3000;
